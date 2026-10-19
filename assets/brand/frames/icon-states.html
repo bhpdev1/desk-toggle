@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Tray icon states, redrawn from TrayIconArt geometry (frame + 2x2 tiles, tile blue #78B4FF). -->
+<!-- Tray icon states, redrawn from TrayIconArt geometry (toggle pill + knob, active blue #78B4FF). -->
 <html lang="en"><head><meta charset="utf-8">
 <link rel="stylesheet" href="../brand.css"><link rel="stylesheet" href="frame.css">
 <style>
@@ -20,14 +20,18 @@
   <div class="tag"><img src="../logo.svg" alt="">DeskToggle <em>/</em> tray icon</div>
 
   <div class="st a">
-    <svg viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" fill="none" stroke="#ECEBE6" stroke-width="5"/>
-      <rect x="18" y="18" width="11" height="11" fill="#78B4FF"/><rect x="35" y="18" width="11" height="11" fill="#78B4FF"/>
-      <rect x="18" y="35" width="11" height="11" fill="#78B4FF"/><rect x="35" y="35" width="11" height="11" fill="#78B4FF"/></svg>
+    <svg viewBox="0 0 64 64">
+      <rect x="4" y="15" width="56" height="34" rx="17" fill="#3B7BFF"/>
+      <circle cx="43" cy="32" r="11" fill="#FFFFFF"/>
+    </svg>
     <span class="label">Icons visible</span>
   </div>
   <div class="mid keys"><span class="key signal">D</span></div>
   <div class="st b">
-    <svg viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" fill="none" stroke="#ECEBE6" stroke-width="5"/></svg>
+    <svg viewBox="0 0 64 64">
+      <rect x="7" y="18" width="50" height="28" rx="14" fill="none" stroke="#ECEBE6" stroke-width="5.5"/>
+      <circle cx="21" cy="32" r="8.5" fill="#ECEBE6"/>
+    </svg>
     <span class="label">Icons hidden</span>
   </div>
   <p class="caption"><b>The tray icon mirrors the current state</b> and follows the light or dark taskbar theme.</p>

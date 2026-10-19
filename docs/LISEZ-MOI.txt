@@ -1,4 +1,4 @@
-﻿DesktopIconsToggle
+DesktopIconsToggle
 ==================
 
 Masque et affiche les icones du bureau Windows d'un raccourci clavier,
@@ -49,8 +49,9 @@ L'icone n'apparait que quand le bureau est au premier plan, c'est-a-dire
 au moment ou elle te sert. Clic gauche pour basculer, clic droit pour le
 menu.
 
-L'icone montre l'etat : un carre avec quatre pastilles bleues quand les
-icones du bureau sont visibles, un carre vide quand elles sont masquees.
+L'icone montre l'etat : un interrupteur bleu active (bouton a droite) quand
+les icones du bureau sont visibles, un interrupteur detoure (bouton a gauche)
+quand elles sont masquees.
 
 
 LE MENU (clic droit sur l'icone)
@@ -133,4 +134,4 @@ quand il ne fait rien : il attend des evenements, il ne surveille rien en
 boucle.
 
 
-Version 2.2.0 - welcometothesale
+Version 2.3.0 - welcometothesale

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- DeskToggle logo ("Nuit" OFF): dark navy tile, slate track, white knob left with 4 unlit tiles. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#222C40"/><stop offset="1" stop-color="#0B0F18"/></linearGradient>
+    <linearGradient id="hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".10"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+    <linearGradient id="trk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A4356"/><stop offset="1" stop-color="#29303E"/></linearGradient>
+    <linearGradient id="knob" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F6F9"/><stop offset="1" stop-color="#D6DBE3"/></linearGradient>
+    <filter id="ks" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity=".5"/></filter>
+  </defs>
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#bg)"/>
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#hi)"/>
+  <rect x="12.75" y="12.75" width="230.5" height="230.5" rx="53.25" fill="none" stroke="#FFFFFF" stroke-opacity=".12" stroke-width="1.5"/>
+  <rect x="32" y="84" width="192" height="88" rx="44" fill="url(#trk)"/>
+  <rect x="33" y="85" width="190" height="86" rx="43" fill="none" stroke="#FFFFFF" stroke-opacity=".10" stroke-width="2"/>
+  <circle cx="76" cy="128" r="36" fill="url(#knob)" filter="url(#ks)"/>
+  <rect x="60" y="112" width="13" height="13" rx="3.5" fill="none" stroke="#97A0AD" stroke-width="2.2"/>
+  <rect x="79" y="112" width="13" height="13" rx="3.5" fill="none" stroke="#97A0AD" stroke-width="2.2"/>
+  <rect x="60" y="131" width="13" height="13" rx="3.5" fill="none" stroke="#97A0AD" stroke-width="2.2"/>
+  <rect x="79" y="131" width="13" height="13" rx="3.5" fill="none" stroke="#97A0AD" stroke-width="2.2"/>
+</svg>

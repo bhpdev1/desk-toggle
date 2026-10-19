@@ -109,9 +109,9 @@ internal static class Program
         _tray = tray;
         tray.CommandChosen += OnCommand;
 
-        // So the tray icon itself already shows the right state — a square with four
-        // dots, or empty — at the very first paint, rather than whatever placeholder art
-        // the constructor started with.
+        // So the tray icon itself already shows the right state — active toggle on, or
+        // outlined toggle off — at the very first paint, rather than whatever placeholder
+        // art the constructor started with.
         tray.SetIconState(IconToggler.AreIconsVisible());
 
         var watcher = new DesktopWatcher();

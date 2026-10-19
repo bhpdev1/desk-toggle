@@ -1,29 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <!-- DeskToggle logo. Derived from the app icon (TrayIconArt: frame + 2x2 tiles, tile blue #78B4FF).
-       Left column = icons on, right column = icons off: both states in one mark. -->
+  <!-- DeskToggle logo ("Nuit"): dark navy tile, blue pill track, white knob carrying the 4 desktop tiles. -->
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#202227"/>
-      <stop offset="1" stop-color="#0D0E10"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.38" cy="0.5" r="0.42">
-      <stop offset="0" stop-color="#78B4FF" stop-opacity=".30"/>
-      <stop offset="1" stop-color="#78B4FF" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#9CC8FF"/>
-      <stop offset="1" stop-color="#78B4FF"/>
-    </linearGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#222C40"/><stop offset="1" stop-color="#0B0F18"/></linearGradient>
+    <linearGradient id="hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".10"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+    <linearGradient id="trk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5C93FF"/><stop offset="1" stop-color="#2A62EA"/></linearGradient>
+    <linearGradient id="knob" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E2E7F0"/></linearGradient>
+    <filter id="glow" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="ks" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#06103A" flood-opacity=".5"/></filter>
   </defs>
-  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#bg)"/>
-  <rect x="9" y="9" width="238" height="238" rx="55" fill="none" stroke="#FFFFFF" stroke-opacity=".10" stroke-width="2"/>
-  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#glow)"/>
-  <!-- frame -->
-  <rect x="58" y="58" width="140" height="140" rx="16" fill="none" stroke="#ECEBE6" stroke-width="14"/>
-  <!-- on tiles -->
-  <rect x="86" y="86" width="35" height="35" rx="7" fill="url(#tile)"/>
-  <rect x="86" y="135" width="35" height="35" rx="7" fill="url(#tile)"/>
-  <!-- off tiles -->
-  <rect x="136.5" y="87.5" width="32" height="32" rx="6" fill="none" stroke="#4A4D55" stroke-width="3"/>
-  <rect x="136.5" y="136.5" width="32" height="32" rx="6" fill="none" stroke="#4A4D55" stroke-width="3"/>
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#bg)"/>
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#hi)"/>
+  <rect x="12.75" y="12.75" width="230.5" height="230.5" rx="53.25" fill="none" stroke="#FFFFFF" stroke-opacity=".12" stroke-width="1.5"/>
+  <g filter="url(#glow)" opacity=".6"><rect x="40" y="96" width="176" height="72" rx="36" fill="#2E6CF6"/></g>
+  <rect x="32" y="84" width="192" height="88" rx="44" fill="url(#trk)"/>
+  <rect x="33" y="85" width="190" height="86" rx="43" fill="none" stroke="#FFFFFF" stroke-opacity=".24" stroke-width="2"/>
+  <circle cx="180" cy="128" r="36" fill="url(#knob)" filter="url(#ks)"/>
+  <rect x="163" y="111" width="15" height="15" rx="4" fill="#2E6CF6"/>
+  <rect x="182" y="111" width="15" height="15" rx="4" fill="#2E6CF6"/>
+  <rect x="163" y="130" width="15" height="15" rx="4" fill="#2E6CF6"/>
+  <rect x="182" y="130" width="15" height="15" rx="4" fill="#2E6CF6"/>
 </svg>
