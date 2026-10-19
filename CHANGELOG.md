@@ -5,6 +5,19 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-10-19
+
+### Changed
+
+- Unified visual identity ("Toggle Nuit") across the repository and executable:
+  - Application icon (`app.ico`) rebuilt as a multi-resolution ICO (`16` to `256` px)
+    featuring the dark navy toggle switch with the 4 desktop tiles on the knob.
+  - Notification-area (tray) icon (`TrayIconArt`) redrawn with anti-aliased signed-distance
+    rendering to mirror the toggle switch state (filled blue pill with right knob when
+    icons are visible; outlined pill with left knob when icons are hidden).
+  - Updated README hero (`assets/hero.png`), GitHub social preview (`assets/brand/social-preview.png`)
+    and framed screenshots (`assets/screenshots/*.png`).
+
 ## [2.2.0] - 2026-10-10
 
 ### Changed
