@@ -92,6 +92,8 @@ dotnet publish src/DesktopIconsToggle -c Release -r win-x64
 
 The executable lands in `src/DesktopIconsToggle/bin/Release/net10.0-windows/win-x64/publish/`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the test rules and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it works.
 
+**Microsoft Store package (MSIX):** `.\scripts\pack-msix.ps1` builds `dist\DeskToggle_<version>_x64.msix` from the same executable. For a submission, pass the identity shown in Partner Center (`-IdentityName`, `-Publisher`, `-PublisherDisplayName`); the package stays unsigned, the Store signs it. In the packaged build, *Start with Windows* uses the manifest's StartupTask instead of the Run key.
+
 ---
 
 ### Good to know
@@ -182,6 +184,8 @@ dotnet publish src/DesktopIconsToggle -c Release -r win-x64
 ```
 
 L'exécutable se trouve dans `src/DesktopIconsToggle/bin/Release/net10.0-windows/win-x64/publish/`. Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour les règles de test et [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) pour le fonctionnement.
+
+**Paquet Microsoft Store (MSIX) :** `.\scripts\pack-msix.ps1` produit `dist\DeskToggle_<version>_x64.msix` à partir du même exécutable. Pour une soumission, passez l'identité affichée dans Partner Center (`-IdentityName`, `-Publisher`, `-PublisherDisplayName`) ; le paquet reste non signé, le Store le signe. Dans la version packagée, *Démarrage automatique* passe par la StartupTask du manifeste au lieu de la clé Run.
 
 ---
 

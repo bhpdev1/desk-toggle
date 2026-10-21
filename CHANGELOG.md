@@ -5,6 +5,16 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Microsoft Store package: `scripts/pack-msix.ps1` builds an unsigned MSIX
+  (`packaging/AppxManifest.xml`, generated tile and taskbar assets, `resources.pri`).
+- In the packaged build, *Démarrage automatique* drives the manifest's StartupTask
+  (`StartupTaskAutostart`) instead of the HKCU Run key, whose writes are virtualized for
+  packaged apps. The standalone exe keeps using the Run key.
+
 ## [2.3.0] - 2026-10-19
 
 ### Changed

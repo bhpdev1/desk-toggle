@@ -61,7 +61,16 @@ internal sealed class RegistryValueStore : IRegistryValueStore
     }
 }
 
-internal sealed class Autostart
+internal interface IAutostart
+{
+    bool IsEnabled();
+
+    /// <summary>Flips the state and returns the new one.</summary>
+    bool Toggle();
+}
+
+/// <summary>Autostart of the standalone exe, through the HKCU Run key.</summary>
+internal sealed class Autostart : IAutostart
 {
     public const string ValueName = "DesktopIconsToggle";
 

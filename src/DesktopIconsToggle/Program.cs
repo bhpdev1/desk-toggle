@@ -36,7 +36,7 @@ internal static class Program
     private static AppWindow? _window;
     private static TrayIcon? _tray;
     private static DesktopWatcher? _watcher;
-    private static Autostart? _autostart;
+    private static IAutostart? _autostart;
     private static Settings? _settings;
     private static TaskbarHider? _taskbar;
     private static HotKey? _hotKey;
@@ -68,7 +68,11 @@ internal static class Program
             settings.Save();
         }
 
-        _autostart = new Autostart(new RegistryValueStore(RegistryValueStore.RunSubKey), exePath);
+        // The Microsoft Store (MSIX) build starts through the StartupTask of its manifest: a
+        // packaged app's Run-key write would only land in its private, virtualized registry.
+        _autostart = StartupTaskAutostart.IsPackaged()
+            ? new StartupTaskAutostart()
+            : new Autostart(new RegistryValueStore(RegistryValueStore.RunSubKey), exePath);
 
         var taskbar = new TaskbarHider();
         _taskbar = taskbar;
