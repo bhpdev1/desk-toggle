@@ -24,9 +24,9 @@
     qui fasse taire SmartScreen.
   -->
   <PropertyGroup>
-    <Version>2.3.0</Version>
-    <FileVersion>2.3.0.0</FileVersion>
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <Version>2.4.0</Version>
+    <FileVersion>2.4.0.0</FileVersion>
+    <AssemblyVersion>2.4.0.0</AssemblyVersion>
     <Product>DesktopIconsToggle</Product>
     <!-- AssemblyTitle alimente FileDescription, le libellé que montrent le
          Gestionnaire des tâches et l'infobulle de l'explorateur. -->
