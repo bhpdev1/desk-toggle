@@ -4,21 +4,23 @@ using DesktopIconsToggle.Native;
 namespace DesktopIconsToggle;
 
 /// <summary>
-/// Draws the two tray icon states the notification area shows: a filled blue toggle switch
-/// with its white knob on the right while the desktop icons are visible, and an outlined
-/// toggle switch with its knob on the left while they are hidden — so the tray icon itself
-/// answers "are my icons on" at a glance. Built the way <see cref="MenuIcons"/> builds its
-/// bitmaps — a 32-bit top-down <c>CreateDIBSection</c> written directly as premultiplied
-/// BGRA — then turned into an <c>HICON</c> via <c>CreateIconIndirect</c>. Sized from
-/// <c>SM_CXSMICON</c> so the art tracks DPI instead of being fixed to 16 px, and coloured
-/// from <see cref="Theme.IsSystemDark"/> — the taskbar/notification-area theme, which is
-/// independent of the app theme <see cref="MenuIcons"/> uses for the popup menu.
+/// Draws the two tray icon states the notification area shows: the exact same solid toggle
+/// switch in both states — filled blue with its white knob on the right while the desktop
+/// icons are visible, and filled neutral slate with the same white knob slid to the left while
+/// they are hidden — so the tray icon reads as one switch toggling on and off at a glance.
+/// Built the way <see cref="MenuIcons"/> builds its bitmaps — a 32-bit top-down
+/// <c>CreateDIBSection</c> written directly as premultiplied BGRA — then turned into an
+/// <c>HICON</c> via <c>CreateIconIndirect</c>. Sized from <c>SM_CXSMICON</c> so the art tracks
+/// DPI instead of being fixed to 16 px, and coloured from <see cref="Theme.IsSystemDark"/> —
+/// the taskbar/notification-area theme, which is independent of the app theme
+/// <see cref="MenuIcons"/> uses for the popup menu.
 /// </summary>
 internal sealed class TrayIconArt : IDisposable
 {
-    // COLORREF-style values (0x00BBGGRR), but grayscale so channel order is moot.
-    private const uint LightTaskbarColor = 0x00202020u; // near-black, for a light taskbar
-    private const uint DarkTaskbarColor  = 0x00EBEBEBu; // near-white, for a dark taskbar
+    // Inactive track fills (COLORREF 0x00BBGGRR) chosen so both the pill against the taskbar
+    // and the white knob against the pill stay clearly legible in dark and light modes.
+    private const uint DarkTaskbarOffTrackColor  = 0x0060514Au; // RGB(74, 81, 96)  (#4A5160)
+    private const uint LightTaskbarOffTrackColor = 0x0090827Bu; // RGB(123, 130, 144) (#7B8290)
 
     // The active toggle blue, RGB(56, 138, 240) (#388AF0, shared with FolderTags),
     // written as a COLORREF (0x00BBGGRR): blue=0xF0, green=0x8A, red=0x38. Run through
@@ -35,10 +37,10 @@ internal sealed class TrayIconArt : IDisposable
         Refresh();
     }
 
-    /// <summary>Filled blue toggle pill with the knob on the right — desktop icons are visible.</summary>
+    /// <summary>Filled blue toggle pill with the white knob on the right — desktop icons are visible.</summary>
     public IntPtr Visible => _visible;
 
-    /// <summary>Outlined toggle pill with the knob on the left — desktop icons are hidden.</summary>
+    /// <summary>Same solid toggle pill in neutral slate with the white knob on the left — desktop icons are hidden.</summary>
     public IntPtr Hidden => _hidden;
 
     /// <summary>
@@ -56,11 +58,11 @@ internal sealed class TrayIconArt : IDisposable
             size = 16;
         }
 
-        uint frameColor = _theme.IsSystemDark ? DarkTaskbarColor : LightTaskbarColor;
-        uint tileColor = IconPalette.EnsureContrast(TileColor, _theme.IsSystemDark);
+        uint activeTrackColor = IconPalette.EnsureContrast(TileColor, _theme.IsSystemDark);
+        uint inactiveTrackColor = _theme.IsSystemDark ? DarkTaskbarOffTrackColor : LightTaskbarOffTrackColor;
 
-        IntPtr newVisible = Render(size, frameColor, tileColor, isVisible: true);
-        IntPtr newHidden = Render(size, frameColor, tileColor, isVisible: false);
+        IntPtr newVisible = Render(size, activeTrackColor, knobRight: true);
+        IntPtr newHidden = Render(size, inactiveTrackColor, knobRight: false);
 
         DestroyIfPresent(_visible);
         DestroyIfPresent(_hidden);
@@ -86,7 +88,7 @@ internal sealed class TrayIconArt : IDisposable
     /// failure: keeping them would leak, and the leak would repeat on every
     /// <see cref="Refresh"/>.
     /// </summary>
-    private static IntPtr Render(int size, uint frameColorRef, uint tileColorRef, bool isVisible)
+    private static IntPtr Render(int size, uint trackColorRef, bool knobRight)
     {
         IntPtr screenDc = Win32.GetDC(IntPtr.Zero);
         if (screenDc == IntPtr.Zero)
@@ -133,7 +135,7 @@ internal sealed class TrayIconArt : IDisposable
                 IntPtr previousBitmap = Win32.SelectObject(memDc, colorBitmap);
                 Win32.SelectObject(memDc, previousBitmap);
 
-                Paint(bits, size, frameColorRef, tileColorRef, isVisible);
+                Paint(bits, size, trackColorRef, knobRight);
 
                 IntPtr maskBitmap = Win32.CreateBitmap(size, size, 1, 1, IntPtr.Zero);
                 if (maskBitmap == IntPtr.Zero)
@@ -170,32 +172,24 @@ internal sealed class TrayIconArt : IDisposable
     }
 
     /// <summary>
-    /// Writes an anti-aliased horizontal toggle pill and circular knob directly into the
+    /// Writes an anti-aliased horizontal toggle pill and white circular knob directly into the
     /// DIB's premultiplied BGRA buffer using signed-distance fields on a 16-unit reference
-    /// grid scaled to <paramref name="size"/>. When <paramref name="isVisible"/> is true,
-    /// the pill is filled with <paramref name="tileColorRef"/> and a white knob sits on the
-    /// right; when false, the pill is stroked with <paramref name="frameColorRef"/> and the
-    /// knob sits on the left.
+    /// grid scaled to <paramref name="size"/>. Both states share the exact same pill and knob
+    /// geometry; only <paramref name="trackColorRef"/> and <paramref name="knobRight"/> change.
     /// </summary>
-    private static unsafe void Paint(IntPtr bits, int size, uint frameColorRef, uint tileColorRef, bool isVisible)
+    private static unsafe void Paint(IntPtr bits, int size, uint trackColorRef, bool knobRight)
     {
-        byte frameR = (byte)(frameColorRef & 0xFF);
-        byte frameG = (byte)((frameColorRef >> 8) & 0xFF);
-        byte frameB = (byte)((frameColorRef >> 16) & 0xFF);
-
-        byte tileR = (byte)(tileColorRef & 0xFF);
-        byte tileG = (byte)((tileColorRef >> 8) & 0xFF);
-        byte tileB = (byte)((tileColorRef >> 16) & 0xFF);
+        byte trackR = (byte)(trackColorRef & 0xFF);
+        byte trackG = (byte)((trackColorRef >> 8) & 0xFF);
+        byte trackB = (byte)((trackColorRef >> 16) & 0xFF);
 
         double s = size / 16.0;
         double cy = 8.0 * s;
         double ax = 5.25 * s;
         double bx = 10.75 * s;
-        double rTrackOuter = 4.25 * s;
-        double stroke = Math.Max(1.35, 1.45 * s);
-        double rTrackInner = rTrackOuter - stroke;
-        double rKnobOn = 2.65 * s;
-        double rKnobOff = 1.85 * s;
+        double rTrack = 4.25 * s;
+        double rKnob = 2.65 * s;
+        double knobX = knobRight ? bx : ax;
 
         byte* pixels = (byte*)bits;
         for (int y = 0; y < size; y++)
@@ -212,58 +206,29 @@ internal sealed class TrayIconArt : IDisposable
 
                 byte* pixel = pixels + (y * size + x) * 4;
 
-                if (isVisible)
+                double alphaTrack = Math.Clamp(0.5 - (distTrack - rTrack), 0.0, 1.0);
+                if (alphaTrack <= 0.0)
                 {
-                    double alphaTrack = Math.Clamp(0.5 - (distTrack - rTrackOuter), 0.0, 1.0);
-                    if (alphaTrack <= 0.0)
-                    {
-                        pixel[0] = 0;
-                        pixel[1] = 0;
-                        pixel[2] = 0;
-                        pixel[3] = 0;
-                        continue;
-                    }
-
-                    double dxKnob = px - bx;
-                    double distKnob = Math.Sqrt(dxKnob * dxKnob + dy * dy);
-                    double alphaKnob = Math.Clamp(0.5 - (distKnob - rKnobOn), 0.0, 1.0);
-
-                    double r = tileR + (255.0 - tileR) * alphaKnob;
-                    double g = tileG + (255.0 - tileG) * alphaKnob;
-                    double b = tileB + (255.0 - tileB) * alphaKnob;
-
-                    byte a = (byte)Math.Round(alphaTrack * 255.0);
-                    pixel[0] = (byte)Math.Round(b * a / 255.0);
-                    pixel[1] = (byte)Math.Round(g * a / 255.0);
-                    pixel[2] = (byte)Math.Round(r * a / 255.0);
-                    pixel[3] = a;
+                    pixel[0] = 0;
+                    pixel[1] = 0;
+                    pixel[2] = 0;
+                    pixel[3] = 0;
+                    continue;
                 }
-                else
-                {
-                    double sdfOuter = distTrack - rTrackOuter;
-                    double sdfInner = rTrackInner - distTrack;
-                    double alphaRing = Math.Clamp(0.5 - Math.Max(sdfOuter, sdfInner), 0.0, 1.0);
 
-                    double dxKnob = px - ax;
-                    double distKnob = Math.Sqrt(dxKnob * dxKnob + dy * dy);
-                    double alphaKnob = Math.Clamp(0.5 - (distKnob - rKnobOff), 0.0, 1.0);
+                double dxKnob = px - knobX;
+                double distKnob = Math.Sqrt(dxKnob * dxKnob + dy * dy);
+                double alphaKnob = Math.Clamp(0.5 - (distKnob - rKnob), 0.0, 1.0);
 
-                    double alpha = Math.Max(alphaRing, alphaKnob);
-                    if (alpha <= 0.0)
-                    {
-                        pixel[0] = 0;
-                        pixel[1] = 0;
-                        pixel[2] = 0;
-                        pixel[3] = 0;
-                        continue;
-                    }
+                double r = trackR + (255.0 - trackR) * alphaKnob;
+                double g = trackG + (255.0 - trackG) * alphaKnob;
+                double b = trackB + (255.0 - trackB) * alphaKnob;
 
-                    byte a = (byte)Math.Round(alpha * 255.0);
-                    pixel[0] = (byte)((frameB * a + 127) / 255);
-                    pixel[1] = (byte)((frameG * a + 127) / 255);
-                    pixel[2] = (byte)((frameR * a + 127) / 255);
-                    pixel[3] = a;
-                }
+                byte a = (byte)Math.Round(alphaTrack * 255.0);
+                pixel[0] = (byte)Math.Round(b * a / 255.0);
+                pixel[1] = (byte)Math.Round(g * a / 255.0);
+                pixel[2] = (byte)Math.Round(r * a / 255.0);
+                pixel[3] = a;
             }
         }
     }

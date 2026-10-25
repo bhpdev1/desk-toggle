@@ -20,7 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sibling visual identity unified with FolderTags:
   - Application icon (`assets/brand/logo.svg`, `app.ico` and generated MSIX Store tiles) now uses
     the Windows 11 warm gold folder carrying a `#388AF0` blue toggle switch on the front flap.
-  - Notification-area active pill (`TrayIconArt`), README badges, hero (`assets/hero.png`),
+  - Notification-area switch (`TrayIconArt` — unified solid pill with white knob in both `#388AF0`
+    active and neutral slate inactive states), README badges, hero (`assets/hero.png`),
     social preview (`assets/brand/social-preview.png`) and framed screenshots aligned to the
     FolderTags dark Mica aesthetic and `#388AF0` accent.
 
