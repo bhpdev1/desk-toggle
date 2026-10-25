@@ -28,6 +28,7 @@ function Render([string]$src, [string]$out, [int]$w, [int]$h, [double]$scale, [b
         "--virtual-time-budget=3000", "--screenshot=`"$out`""
     )
     if ($transparent) { $argv += "--default-background-color=00000000" }
+    else { $argv += "--default-background-color=ff07080d" }
     $argv += $url
     Remove-Item $out -ErrorAction SilentlyContinue
     Start-Process $browser -ArgumentList $argv -Wait -NoNewWindow

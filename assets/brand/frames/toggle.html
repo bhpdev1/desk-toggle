@@ -1,18 +1,41 @@
 <!DOCTYPE html>
-<!-- Before / after illustration (stylized desktop, not a capture). -->
+<!-- Before / after desktop illustration using real Windows 11 desktop icon crops (FolderTags sibling DA). -->
 <html lang="en"><head><meta charset="utf-8">
 <link rel="stylesheet" href="../brand.css"><link rel="stylesheet" href="frame.css">
 <style>
-  .scene { top: 92px; width: 400px; height: 270px; }
-  .scene.a { left: 70px; }
+  .scene { top: 88px; width: 404px; height: 274px; border-radius: 13px; border: 1px solid rgba(255,255,255,.13); background: #0B0D14; }
+  .scene.a { left: 66px; }
   .scene.b { left: 530px; }
-  .scene .icons { inset: 46px 14px 44px 14px; gap: 16px 6px; }
-  .scene .ic i { width: 26px; height: 26px; }
-  .scene .ic i.doc { width: 21px; }
-  .scene .taskbar { height: 32px; }
-  .scene .taskbar span { width: 18px; height: 18px; }
-  .state { top: 12px; left: 12px; }
-  .arrow { position: absolute; left: 481px; top: 210px; width: 38px; height: 38px; color: var(--signal); }
+  .scene .wall {
+    position: absolute; inset: 0;
+    background: url("../wallpaper.jpg") center / cover no-repeat;
+  }
+  .scene.a .wall::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(75% 75% at 45% 35%, rgba(56,138,240,.15) 0%, rgba(8,10,16,.38) 70%);
+  }
+  .scene.b .wall { filter: brightness(.72) saturate(.92); }
+  .desk-grid {
+    position: absolute; left: 22px; top: 44px; right: 22px; bottom: 44px;
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr);
+    gap: 10px 8px; align-items: center; justify-items: center;
+  }
+  .dicon { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dicon img { width: 42px; height: 33px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,.45)); }
+  .dicon span { font: 500 9.5px/1.1 var(--font-text); color: #F3F4F7; text-shadow: 0 1px 4px rgba(0,0,0,.92); }
+  .scene .taskbar {
+    height: 32px; background: rgba(16,18,26,.82); backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255,255,255,.09); gap: 7px;
+  }
+  .scene .taskbar span { width: 17px; height: 17px; border-radius: 4px; background: rgba(255,255,255,.12); }
+  .scene .taskbar span.start { background: linear-gradient(135deg, #5BA4FC, #2570E6); }
+  .scene .taskbar span.exp { background: linear-gradient(180deg, #FFDC6E, #F2AA1F); }
+  .state {
+    top: 11px; left: 12px; border-radius: 999px; padding: 5px 10px;
+    background: rgba(12,14,22,.78); font-size: 10px;
+  }
+  .state.on { border-color: rgba(56,138,240,.42); color: #7CC0FF; }
+  .arrow { position: absolute; left: 481px; top: 208px; width: 38px; height: 38px; color: var(--signal); }
   .press { position: absolute; left: 0; right: 0; top: 392px; display: flex; justify-content: center; }
 </style></head>
 <body>
@@ -20,8 +43,17 @@
   <div class="tag"><img src="../logo.svg" alt="">DeskToggle <em>/</em> one keystroke</div>
 
   <div class="scene a"><div class="layer"><div class="wall"></div>
-    <div class="icons" data-cols="7" data-rows="3" data-holes="8,15"></div>
-    <div class="taskbar"><span class="start"></span><span></span><span></span><span></span><span></span></div></div>
+    <div class="desk-grid">
+      <div class="dicon"><img src="../icons/d_recyclebin.png" alt=""><span>Recycle Bin</span></div>
+      <div class="dicon"><img src="../icons/d_projects.png" alt=""><span>Projects</span></div>
+      <div class="dicon"><img src="../icons/d_documents.png" alt=""><span>Documents</span></div>
+      <div class="dicon"><img src="../icons/d_designs.png" alt=""><span>Designs</span></div>
+      <div class="dicon"><img src="../icons/d_urgent.png" alt=""><span>Urgent</span></div>
+      <div class="dicon"><img src="../icons/d_workspace.png" alt=""><span>Workspace</span></div>
+      <div class="dicon"><img src="../icons/d_downloads.png" alt=""><span>Downloads</span></div>
+      <div class="dicon"><img src="../icons/d_notes.png" alt=""><span>Notes.txt</span></div>
+    </div>
+    <div class="taskbar"><span class="start"></span><span class="exp"></span><span></span><span></span><span></span></div></div>
     <span class="state on">Before</span></div>
 
   <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -34,5 +66,4 @@
   </div>
   <p class="caption"><b>Icons and taskbar out of the way</b> for screen sharing, streaming or focus. Press again to bring them back.</p>
   <div class="grain"></div>
-  <script src="../scene.js"></script>
 </body></html>

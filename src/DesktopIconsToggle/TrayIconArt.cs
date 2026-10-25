@@ -20,10 +20,10 @@ internal sealed class TrayIconArt : IDisposable
     private const uint LightTaskbarColor = 0x00202020u; // near-black, for a light taskbar
     private const uint DarkTaskbarColor  = 0x00EBEBEBu; // near-white, for a dark taskbar
 
-    // The active toggle blue, RGB(59, 123, 255), written as a COLORREF (0x00BBGGRR):
-    // blue=0xFF, green=0x7B, red=0x3B. Run through IconPalette.EnsureContrast before
-    // painting so it stays visible against whichever taskbar theme is active.
-    private const uint TileColor = 0x00FF7B3Bu;
+    // The active toggle blue, RGB(56, 138, 240) (#388AF0, shared with FolderTags),
+    // written as a COLORREF (0x00BBGGRR): blue=0xF0, green=0x8A, red=0x38. Run through
+    // IconPalette.EnsureContrast before painting so it stays visible on light/dark taskbars.
+    private const uint TileColor = 0x00F08A38u;
 
     private readonly Theme _theme;
     private IntPtr _visible;

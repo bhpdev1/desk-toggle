@@ -1,100 +1,244 @@
 <!DOCTYPE html>
-<!-- DeskToggle hero / social preview. Logical size 1280x640.
+<!-- DeskToggle hero / social preview (FolderTags sibling DA). Logical size 1280x640.
      Rendered by scripts/render-brand.ps1 (scale 2 -> assets/hero.png, scale 1 -> assets/brand/social-preview.png). -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="brand.css">
 <style>
-  html, body { width: 1280px; height: 640px; overflow: hidden; }
-  body { position: relative; }
-  .bgglow {
+  :root {
+    --red: #F0524F; --orange: #F69B30; --yellow: #F7CB3F; --green: #62C255;
+    --blue: #388AF0; --purple: #B063D6; --gray: #98989D;
+    --text: #F3F4F7; --dim: #A9AFBC;
+    --font: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    --mono: "Cascadia Mono", "Cascadia Code", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #07080D; }
+  body { position: relative; font-family: var(--font); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+  /* ---------- background: sober graphite wallpaper, blurred like Mica (shared with FolderTags) ---------- */
+  .wall {
+    position: absolute; inset: -40px;
+    background: url("wallpaper.jpg") 70% 50% / cover no-repeat;
+    filter: blur(4px);
+  }
+  .shade {
     position: absolute; inset: 0;
     background:
-      radial-gradient(45% 60% at 72% 48%, rgba(120,180,255,.10) 0%, rgba(120,180,255,0) 70%),
-      linear-gradient(180deg, #0F1013 0%, #0B0C0E 100%);
+      linear-gradient(90deg, rgba(7,8,13,.96) 0%, rgba(7,8,13,.86) 34%, rgba(7,8,13,.25) 62%, rgba(7,8,13,.05) 100%),
+      linear-gradient(0deg, rgba(7,8,13,.55) 0%, rgba(7,8,13,0) 30%);
   }
-  .gridlines {
-    position: absolute; inset: 0; opacity: .5;
-    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 40px 40px;
-    -webkit-mask-image: radial-gradient(60% 70% at 72% 50%, #000 0%, transparent 75%);
+  .grain {
+    position: absolute; inset: 0; opacity: .06; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
+  .glow { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; }
 
-  .brand { position: absolute; left: 76px; top: 0; bottom: 0; width: 500px; display: flex; flex-direction: column; justify-content: center; }
+  /* ---------- left column: identity (exact FolderTags lockup & frosted chips) ---------- */
+  .brand { position: absolute; left: 76px; top: 0; bottom: 0; width: 520px; display: flex; flex-direction: column; justify-content: center; }
   .lockup { display: flex; align-items: center; gap: 18px; }
   .lockup img { width: 84px; height: 84px; }
-  .lockup h1 { font-size: 62px; font-weight: 600; letter-spacing: -1.4px; line-height: 1; }
-  .tagline { margin-top: 26px; font-size: 26px; line-height: 1.32; font-weight: 400; max-width: 470px; }
-  .tagline b { font-weight: 600; color: var(--signal); }
-  .sub { margin-top: 12px; font: 400 17px/1.5 var(--font-text); color: var(--dim); max-width: 440px; }
-  .chips { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; max-width: 470px; }
+  .lockup h1 { font-size: 62px; font-weight: 600; letter-spacing: -1.2px; line-height: 1; }
+  .tagline { margin-top: 26px; font-size: 25px; line-height: 1.35; font-weight: 400; color: var(--text); max-width: 475px; }
+  .tagline b { font-weight: 600; }
+  .sub { margin-top: 12px; font-size: 17px; line-height: 1.5; color: var(--dim); max-width: 455px; }
+  .chips { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; max-width: 490px; }
   .chip {
-    display: inline-flex; align-items: center; gap: 9px; height: 32px; padding: 0 13px;
-    border-radius: 8px; font: 500 13.5px/1 var(--mono); color: #D9DAD5;
-    background: var(--surface); border: 1px solid var(--line-strong);
-    box-shadow: 0 2px 0 #08090A;
+    display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px;
+    border-radius: 16px; font-size: 14px; font-weight: 500; color: #E4E7EE;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10);
+    backdrop-filter: blur(20px);
   }
-  .chip i { width: 8px; height: 8px; border-radius: 2px; background: var(--signal); }
-  .chip i.o { background: transparent; box-shadow: inset 0 0 0 1.5px #5A5D66; }
+  .chip i { width: 8px; height: 8px; border-radius: 50%; }
 
-  .scene { left: 610px; top: 74px; width: 600px; height: 420px; }
-  .scene .taskbar { justify-content: flex-start; padding-left: 14px; }
-  .layer.off { clip-path: polygon(57% 0, 100% 0, 100% 100%, 43% 100%); }
-  .seam { position: absolute; left: 610px; top: 74px; width: 600px; height: 420px; pointer-events: none; }
-  .state.on { left: 14px; }
-  .state.off { right: 14px; }
-  .press { position: absolute; left: 768px; top: 470px; }
+  /* ---------- right side: Windows 11 Desktop split + Acrylic shortcut card ---------- */
+  .desk-win {
+    position: absolute; left: 600px; top: 44px; width: 576px; height: 382px; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: 0 28px 70px rgba(0,0,0,.55), 0 8px 20px rgba(0,0,0,.35);
+    background: #0D1018;
+  }
+  .desk-layer { position: absolute; inset: 0; }
+  .desk-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(65% 75% at 72% 35%, rgba(56,138,240,.28) 0%, rgba(56,138,240,0) 62%),
+      radial-gradient(50% 60% at 24% 80%, rgba(45,85,155,.26) 0%, rgba(45,85,155,0) 65%),
+      url("wallpaper.jpg") center / cover no-repeat;
+  }
+  .desk-layer.on .desk-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(12,16,26,.35), rgba(10,12,20,.55));
+  }
+  .desk-layer.off {
+    clip-path: polygon(58% 0, 100% 0, 100% 100%, 43% 100%);
+  }
+  .desk-layer.off .desk-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(9,11,18,.52), rgba(7,9,15,.72));
+  }
+
+  .grid {
+    position: absolute; left: 18px; top: 48px;
+    display: grid; grid-template-columns: repeat(4, 86px); grid-template-rows: repeat(3, 86px); gap: 8px 6px;
+  }
+  .d-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .d-item img { width: 54px; height: 42px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,.45)); }
+  .d-item span {
+    margin-top: 4px; font-size: 11px; line-height: 1.2; color: #F1F3F8;
+    text-shadow: 0 1px 3px rgba(0,0,0,.9);
+  }
+
+  .taskbar {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 38px;
+    background: rgba(18,20,28,.84); backdrop-filter: blur(18px);
+    border-top: 1px solid rgba(255,255,255,.09);
+    display: flex; align-items: center; justify-content: flex-start; padding-left: 16px; gap: 8px;
+  }
+  .tb-ico { width: 20px; height: 20px; border-radius: 5px; background: rgba(255,255,255,.15); }
+  .tb-ico.start { background: linear-gradient(135deg, #4CA2FF, #2568DC); }
+  .tb-ico.folder { background: linear-gradient(180deg, #FFDC6E, #F2AE16); }
+
+  .pill-state {
+    position: absolute; top: 14px; padding: 5px 10px; border-radius: 99px;
+    font: 600 10.5px/1 var(--mono); letter-spacing: 1.4px; text-transform: uppercase;
+    background: rgba(10,12,18,.68); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(12px);
+  }
+  .pill-state.on { left: 14px; color: #78B4FF; }
+  .pill-state.off { right: 14px; color: #A9AFBC; }
+
+  .seam { position: absolute; left: 600px; top: 44px; width: 576px; height: 382px; pointer-events: none; }
+
+  /* Foreground Acrylic Card (sibling to FolderTags's .desk-card) */
+  .hotkey-card {
+    position: absolute; left: 812px; top: 360px; width: 424px; height: 212px; border-radius: 12px;
+    background: rgba(14,15,20,.66); backdrop-filter: blur(26px) saturate(1.5);
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: 0 28px 70px rgba(0,0,0,.55), 0 8px 20px rgba(0,0,0,.35);
+    padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .hk-top { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: var(--dim); }
+  .hk-top b { color: var(--text); font-weight: 600; letter-spacing: .2px; }
+  .hk-badge {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px;
+    background: rgba(56,138,240,.16); border: 1px solid rgba(56,138,240,.38);
+    font: 600 11px/1 var(--mono); color: #82BAFF;
+  }
+  .hk-badge i { width: 6px; height: 6px; border-radius: 50%; background: #388AF0; }
+
+  .keys { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 4px 0; }
+  .key {
+    min-width: 68px; height: 58px; padding: 0 18px; border-radius: 11px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font: 600 20px/1 var(--font); color: #F3F4F7;
+    background: linear-gradient(180deg, rgba(46,50,62,.95) 0%, rgba(28,31,40,.95) 100%);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 5px 0 #090A0F, 0 12px 24px rgba(0,0,0,.45);
+  }
+  .key.accent {
+    color: #8CC0FF; border-color: rgba(56,138,240,.65);
+    background: linear-gradient(180deg, rgba(38,68,122,.92) 0%, rgba(22,42,82,.95) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 5px 0 #08152E, 0 0 26px rgba(56,138,240,.35), 0 12px 24px rgba(0,0,0,.45);
+  }
+  .plus { font-size: 18px; color: var(--dim); }
+
+  .hk-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08);
+    font-size: 13px; color: var(--dim);
+  }
+  .hk-foot span { display: inline-flex; align-items: center; gap: 7px; }
+  .hk-foot i { width: 7px; height: 7px; border-radius: 50%; }
 </style>
 </head>
 <body>
-  <div class="bgglow"></div>
-  <div class="gridlines"></div>
+  <div class="wall"></div>
+  <div class="shade"></div>
+  <div class="grain"></div>
 
-  <div class="brand">
+  <div class="glow" style="left:860px;top:340px;width:360px;height:240px;background:#388AF0;opacity:.28"></div>
+
+  <!-- Windows 11 Desktop Split Window -->
+  <div class="desk-win">
+    <div class="desk-layer on">
+      <div class="desk-bg"></div>
+      <div class="grid" id="deskGrid"></div>
+      <div class="taskbar">
+        <span class="tb-ico start"></span>
+        <span class="tb-ico folder"></span>
+        <span class="tb-ico"></span>
+        <span class="tb-ico"></span>
+        <span class="tb-ico"></span>
+      </div>
+    </div>
+    <div class="desk-layer off">
+      <div class="desk-bg"></div>
+    </div>
+    <span class="pill-state on">Icons on</span>
+    <span class="pill-state off">Icons off</span>
+  </div>
+
+  <svg class="seam" viewBox="0 0 576 382">
+    <defs>
+      <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#78B4FF" stop-opacity=".15"/>
+        <stop offset=".45" stop-color="#388AF0" stop-opacity=".95"/>
+        <stop offset="1" stop-color="#78B4FF" stop-opacity=".85"/>
+      </linearGradient>
+      <filter id="blur"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+    <line x1="334" y1="0" x2="248" y2="382" stroke="url(#sg)" stroke-width="6" filter="url(#blur)" opacity=".75"/>
+    <line x1="334" y1="0" x2="248" y2="382" stroke="url(#sg)" stroke-width="1.6"/>
+  </svg>
+
+  <!-- Overlapping Acrylic Hotkey Card -->
+  <div class="hotkey-card">
+    <div class="hk-top">
+      <b>Instant desktop toggle</b>
+      <span class="hk-badge"><i></i>Global hotkey</span>
+    </div>
+    <div class="keys">
+      <span class="key">Ctrl</span><span class="plus">+</span>
+      <span class="key">Alt</span><span class="plus">+</span>
+      <span class="key accent">D</span>
+    </div>
+    <div class="hk-foot">
+      <span><i style="background:#388AF0"></i>Desktop icons hidden</span>
+      <span><i style="background:#62C255"></i>Taskbar auto-hide</span>
+    </div>
+  </div>
+
+  <!-- Left Brand Column -->
+  <section class="brand">
     <div class="lockup">
       <img src="logo.svg" alt="">
       <h1>DeskToggle</h1>
     </div>
-    <p class="tagline"><b>One keystroke.</b> Desktop icons and taskbar gone, then back.</p>
-    <p class="sub">A tiny native Windows utility for screen sharing, streaming and focused work.</p>
+    <p class="tagline"><b>One keystroke to clear your desktop</b>, icons and taskbar gone, then back.</p>
+    <p class="sub">Press Ctrl+Alt+D before sharing your screen, streaming or focusing. Press again to restore everything.</p>
     <div class="chips">
-      <span class="chip"><i></i>~1.5 MB single exe</span>
-      <span class="chip"><i></i>0 ms idle CPU</span>
-      <span class="chip"><i class="o"></i>No admin</span>
-      <span class="chip"><i class="o"></i>No keyboard hook</span>
+      <span class="chip"><i style="background:var(--green)"></i>NativeAOT single exe</span>
+      <span class="chip"><i style="background:var(--blue)"></i>0 ms idle CPU</span>
+      <span class="chip"><i style="background:var(--yellow)"></i>No admin · No hook</span>
+      <span class="chip"><i style="background:var(--purple)"></i>Windows 11 &amp; 10</span>
     </div>
-  </div>
+  </section>
 
-  <div class="scene">
-    <div class="layer on">
-      <div class="wall"></div>
-      <div class="icons" data-cols="7" data-rows="4" data-holes="11,18,19,23,26,27"></div>
-      <div class="taskbar"><span class="start"></span><span></span><span></span><span></span><span></span>
-        <div class="tray"><span style="background:var(--signal)"></span><span style="background:rgba(255,255,255,.3)"></span></div></div>
-    </div>
-    <div class="layer off">
-      <div class="wall"></div>
-    </div>
-    <span class="state on">Icons on</span>
-    <span class="state off">Icons off</span>
-  </div>
-  <svg class="seam" viewBox="0 0 600 420">
-    <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#78B4FF" stop-opacity=".0"/><stop offset=".35" stop-color="#78B4FF" stop-opacity=".9"/>
-      <stop offset="1" stop-color="#78B4FF" stop-opacity=".9"/></linearGradient>
-      <filter id="blur"><feGaussianBlur stdDeviation="4"/></filter></defs>
-    <line x1="342" y1="0" x2="258" y2="420" stroke="url(#sg)" stroke-width="6" filter="url(#blur)" opacity=".7"/>
-    <line x1="342" y1="0" x2="258" y2="420" stroke="url(#sg)" stroke-width="1.5"/>
-  </svg>
-
-  <div class="press keys">
-    <span class="key">Ctrl</span><span class="plus">+</span>
-    <span class="key">Alt</span><span class="plus">+</span>
-    <span class="key signal">D</span>
-  </div>
-
-  <div class="grain"></div>
-  <script src="scene.js"></script>
+  <script>
+    const items = [
+      ["recyclebin", "Recycle Bin"], ["projects", "Projects"], ["documents", "Documents"], ["designs", "Designs"],
+      ["urgent", "Urgent"], ["workspace", "Workspace"], ["downloads", "Downloads"], ["music", "Music"],
+      ["notes", "Notes.txt"], ["archives", "Archives"], ["todo", "todo.txt"], null
+    ];
+    const grid = document.getElementById("deskGrid");
+    items.forEach(it => {
+      const div = document.createElement("div");
+      div.className = "d-item";
+      if (it) {
+        div.innerHTML = `<img src="icons/d_${it[0]}.png" alt=""><span>${it[1]}</span>`;
+      }
+      grid.appendChild(div);
+    });
+  </script>
 </body>
 </html>

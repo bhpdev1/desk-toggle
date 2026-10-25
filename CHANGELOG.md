@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`StartupTaskAutostart`) instead of the HKCU Run key, whose writes are virtualized for
   packaged apps. The standalone exe keeps using the Run key.
 
+### Changed
+
+- Sibling visual identity unified with FolderTags:
+  - Application icon (`assets/brand/logo.svg`, `app.ico` and generated MSIX Store tiles) now uses
+    the Windows 11 warm gold folder carrying a `#388AF0` blue toggle switch on the front flap.
+  - Notification-area active pill (`TrayIconArt`), README badges, hero (`assets/hero.png`),
+    social preview (`assets/brand/social-preview.png`) and framed screenshots aligned to the
+    FolderTags dark Mica aesthetic and `#388AF0` accent.
+
 ## [2.3.0] - 2026-10-19
 
 ### Changed
